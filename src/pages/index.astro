@@ -1,16 +1,31 @@
 ---
+// src/pages/index.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout 
+  title="Welcome to My Website" 
+  description="A modern website built with Astro"
+>
+  <h1>Welcome to My Astro Website!</h1>
+  <p>This content goes into the main slot of the layout.</p>
+  
+  <Fragment slot="head">
+    <meta property="og:title" content="Welcome to My Website" />
+    <style>
+      .hero {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 2rem;
+        border-radius: 8px;
+      }
+    </style>
+  </Fragment>
+
+  <Fragment slot="scripts">
+    <script>
+      console.log('Welcome to my website!');
+    </script>
+  </Fragment>
+</BaseLayout>
