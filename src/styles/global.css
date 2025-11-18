@@ -3,3 +3,7 @@
 :root {
   font-family: 'Geist Mono', monospace;
 }
+
+.hero {
+  max-width: 1600px;
+}

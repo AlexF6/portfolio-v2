@@ -1,15 +1,194 @@
 ---
 // src/components/Hero.astro
+import Typewriter from "./Typewriter.jsx";
 ---
 
-<section class="grid grid-cols-2 min-h-screen min-w-screen">
-  <div>
-    Welcome
+<section class="relative bg-black text-gray-100">
+  <div
+    class="mx-auto flex md:min-h-screen flex-col hero gap-10 px-4 py-12 
+           sm:px-6 lg:px-8 md:flex-row md:items-center"
+  >
+    <!-- LEFT: Texto principal -->
+    <div class="flex-1 space-y-6">
+      <h1 class="text-4xl font-bold leading-tight sm:text-5xl md:text-6xl">
+        Alexsander Gonzalez
+      </h1>
+
+      <div class="flex flex-wrap items-baseline gap-2 text-2xl sm:text-3xl">
+        <span class="text-gray-300">I am a</span>
+        <Typewriter
+          client:load
+          words={["Software Developer", "UX/UI Enthusiast", "Problem Solver"]}
+        />
+      </div>
+
+      <p class="max-w-xl text-sm sm:text-base text-gray-400">
+        Crafting elegant, performant web experiences that blend creativity with
+        cutting-edge technology.
+      </p>
+
+      <div class="flex flex-wrap items-center gap-4">
+        <a
+          href="/Alexsander-Gonzalez-CV.pdf"
+          download
+          class="inline-flex items-center rounded-full border border-lime-300 
+                 bg-lime-300/10 px-5 py-2.5 text-sm font-medium text-lime-100
+                 hover:bg-lime-300/20 hover:-translate-y-[1px]
+                 focus-visible:outline-none focus-visible:ring-2 
+                 focus-visible:ring-lime-300 focus-visible:ring-offset-2 
+                 focus-visible:ring-offset-black
+                 transition"
+        >
+          Download Resume
+        </a>
+
+        <div class="flex items-center gap-3 text-sm text-gray-400">
+          <span class="hidden sm:inline">Find me on</span>
+          <nav class="flex gap-2" aria-label="Social links">
+            <!-- GitHub -->
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/AlexF6"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full 
+                     border border-gray-700 bg-zinc-900/70
+                     hover:border-lime-300 hover:text-lime-300
+                     focus-visible:outline-none focus-visible:ring-2 
+                     focus-visible:ring-lime-300 focus-visible:ring-offset-2 
+                     focus-visible:ring-offset-black
+                     transition"
+              aria-label="GitHub profile"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                  d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 
+                     0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 
+                     0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338
+                     -.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605
+                     1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 
+                     2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107
+                     -4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268
+                     .099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 
+                     2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 
+                     2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 
+                     1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675
+                     1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479 
+                     C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z"
+                ></path>
+              </svg>
+            </a>
+
+            <!-- LinkedIn -->
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://www.linkedin.com/in/alexsander-gonzález-farrayans-149a18267"
+              class="inline-flex h-10 w-10 items-center justify-center rounded-full 
+                     border border-gray-700 bg-zinc-900/70
+                     hover:border-lime-300 hover:text-lime-300
+                     focus-visible:outline-none focus-visible:ring-2 
+                     focus-visible:ring-lime-300 focus-visible:ring-offset-2 
+                     focus-visible:ring-offset-black
+                     transition"
+              aria-label="LinkedIn profile"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="currentColor"
+                viewBox="-143 145 512 512"
+                aria-hidden="true"
+              >
+                <path
+                  d="M329,145h-432c-22.1,0-40,17.9-40,40v432c0,22.1,17.9,40,40,40h432
+                     c22.1,0,40-17.9,40-40V185C369,162.9,351.1,145,329,145z M41.4,508.1H-8.5
+                     V348.4h49.9V508.1z M15.1,328.4h-0.4c-18.1,0-29.8-12.2-29.8-27.7
+                     c0-15.8,12.1-27.7,30.5-27.7c18.4,0,29.7,11.9,30.1,27.7
+                     C45.6,316.1,33.9,328.4,15.1,328.4z M241,508.1h-56.6v-82.6
+                     c0-21.6-8.8-36.4-28.3-36.4c-14.9,0-23.2,10-27,19.6c-1.4,3.4-1.2,8.2-1.2,13.1
+                     v86.3H71.8c0,0,0.7-146.4,0-159.7h56.1v25.1c7.4-11.4,20.5-27.6,50-27.6
+                     c36.5,0,64.1,23.8,64.1,75.1V508.1z"
+                ></path>
+              </svg>
+            </a>
+          </nav>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Modelo 3D / visual con tilt -->
+    <div class="flex-1 mt-8 md:mt-0">
+      <div
+        id="model-tilt-container"
+        class="relative mx-auto h-56 w-full max-w-xs 
+               sm:h-72 md:h-80 lg:h-96
+               [perspective:1200px]"
+      >
+        <div
+          id="model-tilt-card"
+          class="h-full w-full rounded-3xl border border-zinc-800 
+                 bg-gradient-to-br from-zinc-900 via-zinc-800 to-black
+                 shadow-[0_0_80px_rgba(190,242,100,0.12)]
+                 flex items-center justify-center
+                 transition-transform duration-200 ease-out
+                 will-change-transform"
+        >
+          <model-viewer
+            src="/models/bmo.glb"
+            alt="3D avatar of Alexsander Gonzalez"
+            camera-controls
+            auto-rotate
+            autoplay
+            exposure="0.5"
+            interaction-prompt="none"
+            class="h-full w-full rounded-3xl bg-black/40"
+          ></model-viewer>
+        </div>
+      </div>
+
+      <noscript class="mt-2 text-center text-gray-400 text-sm">
+        Enable JavaScript to see and interact with the 3D model.
+      </noscript>
+    </div>
   </div>
-  <div>
-    To My website
-  </div>
+
+  <!-- Script para efecto tilt en hover -->
+  <script>
+    if (typeof window !== "undefined") {
+      const container = document.getElementById("model-tilt-container");
+      const card = document.getElementById("model-tilt-card");
+
+      if (container && card) {
+        const reduceMotion = window.matchMedia?.(
+          "(prefers-reduced-motion: reduce)"
+        ).matches;
+
+        if (!reduceMotion) {
+          const maxRotate = 10; // grados máximos
+
+          container.addEventListener("pointermove", (event) => {
+            const rect = container.getBoundingClientRect();
+            const x = (event.clientX - rect.left) / rect.width - 0.5; // -0.5 a 0.5
+            const y = (event.clientY - rect.top) / rect.height - 0.5; // -0.5 a 0.5
+
+            const rotateX = y * -maxRotate;
+            const rotateY = x * maxRotate;
+
+            card.style.transform =
+              `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.03)`;
+          });
+
+          container.addEventListener("pointerleave", () => {
+            card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+          });
+        }
+      }
+    }
+  </script>
 </section>
-
-
-
