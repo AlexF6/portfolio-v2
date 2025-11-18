@@ -1,0 +1,94 @@
+---
+
+---
+
+<div id="cursor-dot"></div>
+<div id="cursor-trailer"></div>
+
+<style>
+  html.custom-cursor-active,
+  html.custom-cursor-active * {
+    cursor: none !important;
+  }
+  #cursor-dot {
+    position: fixed;
+    top: 0;
+    left: 0;
+    /* width: 8px; */
+    /* height: 8px; */
+    background-color: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+  }
+  #cursor-trailer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition:
+      opacity 0.3s ease,
+      transform 0.2s ease;
+    mix-blend-mode: difference;
+  }
+  #cursor-trailer.hovering {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0.8;
+  }
+</style>
+
+<script>
+  if (typeof window !== "undefined") {
+    const dot = document.getElementById("cursor-dot") as HTMLElement | null;
+    const trailer = document.getElementById("cursor-trailer") as HTMLElement | null;
+
+    if (dot && trailer) {
+      if (window.matchMedia("(pointer: coarse)").matches) {
+        dot.remove();
+        trailer.remove();
+      } else {
+        document.documentElement.classList.add("custom-cursor-active");
+
+        let trailerX = 0, trailerY = 0;
+        let mouseX = 0, mouseY = 0;
+
+        window.addEventListener("pointermove", (e: PointerEvent) => {
+          mouseX = e.clientX;
+          mouseY = e.clientY;
+          
+          dot.style.left = `${mouseX}px`;
+          dot.style.top = `${mouseY}px`;
+        });
+
+        const animate = () => {
+          trailerX += (mouseX - trailerX) * 0.2;
+          trailerY += (mouseY - trailerY) * 0.2;
+
+          trailer.style.left = `${trailerX}px`;
+          trailer.style.top = `${trailerY}px`;
+
+          requestAnimationFrame(animate);
+        };
+
+        animate();
+
+        const addHoverEffect = () => {
+          document.querySelectorAll("a, button, input[type='submit'], [data-hoverable]").forEach((el) => {
+            el.addEventListener("mouseenter", () => trailer.classList.add("hovering"));
+            el.addEventListener("mouseleave", () => trailer.classList.remove("hovering"));
+          });
+        };
+
+        addHoverEffect();
+        document.addEventListener("astro:after-swap", addHoverEffect);
+      }
+    }
+  }
+</script>

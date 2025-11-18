@@ -1,0 +1,92 @@
+---
+// Este componente es autocontenido.
+---
+
+<div id="cont_menu">
+  <a role="button" id="menu" href="#">
+    <div id="text_menu">
+      <div class="inner-text">
+        <div>menu</div>
+        <div>close</div>
+      </div>
+    </div>
+    <div id="burger">
+      <span></span>
+      <span></span>
+    </div>
+  </a>
+</div>
+
+<style>
+  #cont_menu {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1001;
+    mix-blend-mode: difference;
+    color: white;
+  }
+
+  #menu {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+    font-family: 'Geist Mono', monospace;
+    text-transform: uppercase;
+    font-size: 1rem;
+  }
+  
+  #text_menu {
+    height: 1.2em;
+    overflow: hidden;
+  }
+
+  .inner-text {
+    transition: transform 0.6s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+  }
+
+  body.menu-is-open #text_menu .inner-text {
+    transform: translateY(-100%);
+  }
+
+  #burger {
+    width: 20px;
+    height: 16px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  #burger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    transition: transform 0.6s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+  }
+
+  body.menu-is-open #burger span:nth-child(1) {
+    transform-origin: center;
+    transform: translateY(7px) rotate(45deg);
+  }
+  body.menu-is-open #burger span:nth-child(2) {
+    transform-origin: center;
+    transform: translateY(-7px) rotate(-45deg);
+  }
+</style>
+
+<script>
+  const menuButton = document.getElementById('menu');
+
+  if (menuButton) {
+    menuButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      // CAMBIO: Se alterna una clase en el <body>
+      document.body.classList.toggle('menu-is-open');
+    });
+  }
+</script>

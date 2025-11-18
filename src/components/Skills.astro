@@ -1,0 +1,102 @@
+---
+// Array of skills to make it easy to update.
+const skills = [
+  { name: "Astro", description: "Modern static site generator for fast, content-focused websites." },
+  { name: "React", description: "A JavaScript library for building user interfaces with components." },
+  { name: "Node.js", description: "JavaScript runtime for building scalable server-side applications." },
+  { name: "Tailwind CSS", description: "A utility-first CSS framework for rapid UI development." },
+  { name: "TypeScript", description: "A typed superset of JavaScript that compiles to plain JavaScript." },
+  { name: "Figma", description: "A collaborative design tool for creating user interfaces and prototypes." },
+];
+---
+
+<section 
+  id="skills-section"  
+  class="relative min-h-screen flex flex-col items-center justify-center gap-12 py-24 px-4 overflow-hidden"
+>
+  <!-- Title and description -->
+  <div class="text-center z-10">
+    <h2 class="text-4xl font-bold text-lime-300 mb-4 tracking-wider uppercase">Core Competencies</h2>
+    <p class="text-lg text-gray-400 max-w-2xl">
+      A selection of technologies I use to bring ideas to life.
+    </p>
+  </div>
+
+  <!-- The Interactive Menu -->
+  <div class="relative flex items-center justify-center gap-10 md:gap-16 z-10">
+    <!-- Indicator Orb Column -->
+    <div id="orb-container" class="relative h-[280px] w-8">
+      <div id="menu-orb" class="absolute left-1/2 top-0 h-6 w-6 rounded-full bg-lime-400">
+        <!-- The brightness of the orb -->
+        <div class="absolute inset-0 rounded-full bg-lime-300/50 blur-lg"></div>
+      </div>
+    </div>
+
+    <!-- Skills List Column -->
+    <ul class="flex flex-col gap-4">
+      {skills.map(skill => (
+        <li class="menu-item group" data-description={skill.description}>
+          <span class="text-2xl font-semibold uppercase tracking-widest">{skill.name}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+  
+  <div id="skill-description-container" class="relative z-10 mt-8 h-12 w-full max-w-lg">
+    <p id="skill-description" class="text-center text-gray-500 transition-opacity duration-300"></p>
+  </div>
+
+</section>
+
+<style>
+  #menu-orb {
+    transform: translate(-50%, -50%);
+    transition: top 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  .menu-item {
+    cursor: default;
+    color: #555;
+    transition: color 0.3s ease-in-out;
+  }
+
+  .menu-item.active {
+    color: #f3f4f6;
+
+  }
+</style>
+
+<script>
+  const orb = document.getElementById('menu-orb');
+  const menuItems = document.querySelectorAll('.menu-item');
+  const descriptionEl = document.getElementById('skill-description');
+
+  if (orb && menuItems.length > 0 && descriptionEl) {
+    const updateActiveItem = (item: HTMLElement) => {
+      const newTop = item.offsetTop + item.offsetHeight / 2;
+      orb.style.top = `${newTop}px`;
+
+      menuItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+
+      const description = item.getAttribute('data-description');
+      descriptionEl.style.opacity = '0';
+      setTimeout(() => {
+        descriptionEl.textContent = description || '';
+        descriptionEl.style.opacity = '1';
+      }, 150);
+    };
+
+    menuItems.forEach(item => {
+      item.addEventListener('mouseenter', () => {
+        updateActiveItem(item as HTMLElement);
+      });
+    });
+
+    setTimeout(() => {
+      if (menuItems[0]) {
+        updateActiveItem(menuItems[0] as HTMLElement);
+      }
+    }, 100);
+  }
+</script>

@@ -1,0 +1,113 @@
+---
+
+const navLinks = [
+  { href: "/", text: "Home" },
+  { href: "/#skills-section", text: "Skills" },
+  { href: "/projects", text: "Projects" },
+  { href: "/contact", text: "Contact" },
+];
+---
+
+<section id="navigation-overlay">
+  <nav>
+    <ul>
+      {navLinks.map(link => (
+        <li>
+          <a class="nav-link" href={link.href} data-text={link.text}>
+            {link.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</section>
+
+<style>
+  #navigation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #131313;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    transform: translateY(-100%);
+    transition: transform 1s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+  }
+
+  body.menu-is-open #navigation-overlay {
+    transform: translateY(0);
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+  }
+
+  li {
+    margin: 1.5rem 0;
+  }
+
+  .nav-link {
+    font-family: 'Geist Mono', monospace;
+    font-size: clamp(2rem, 8vw, 4rem);
+    color: #ddd;
+    text-decoration: none;
+    text-transform: uppercase;
+    display: inline-block;
+    overflow: hidden;
+  }
+
+  .char {
+    display: inline-block;
+    transform: translateY(120%);
+    transition: transform 0.8s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+  }
+
+  body.menu-is-open .char {
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function splitTextIntoChars(linkElement: HTMLElement) {
+    const text = linkElement.dataset.text || '';
+    linkElement.innerHTML = '';
+    let charIndex = 0;
+
+    text.split(' ').forEach((word, wordIndex) => {
+      const wordSpan = document.createElement('span');
+      wordSpan.style.display = 'inline-block';
+      wordSpan.style.marginRight = '0.5em';
+
+      word.split('').forEach(char => {
+        const charSpan = document.createElement('span');
+        charSpan.className = 'char';
+        charSpan.textContent = char;
+        charSpan.style.transitionDelay = `${charIndex * 40}ms`;
+        wordSpan.appendChild(charSpan);
+        charIndex++;
+      });
+      linkElement.appendChild(wordSpan);
+    });
+  }
+  
+  function initNavMenu() {
+    const navLinks = document.querySelectorAll<HTMLElement>('.nav-link');
+    navLinks.forEach(splitTextIntoChars);
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        document.body.classList.remove('menu-is-open');
+      });
+    });
+  }
+
+  document.addEventListener('astro:page-load', initNavMenu);
+</script>

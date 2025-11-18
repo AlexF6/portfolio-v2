@@ -1,5 +1,8 @@
 ---
 // src/layouts/BaseLayout.astro
+import CustomCursor from "../components/CustomCursor.astro";
+import MenuToggle from "../components/MenuToggle.astro";
+import NavigationMenu from "../components/NavigationMenu.astro";
 import "../styles/global.css";
 
 export interface Props {
@@ -36,6 +39,8 @@ const { title, description = "Welcome to my website" } = Astro.props;
   </head>
 
   <body class="min-h-screen bg-black text-gray-300">
+    <MenuToggle/>
+    <NavigationMenu/>
     <!-- Header -->
     <header>
     </header>
@@ -48,8 +53,60 @@ const { title, description = "Welcome to my website" } = Astro.props;
     <!-- Footer -->
     <footer>
     </footer>
+      <CustomCursor />
 
-    <!-- Slot for additional scripts -->
+    <!-- SCRIPT CON TIPADO CORREGIDO -->
+    <script>
+      // Especificamos que buscamos elementos <a> para que 'trigger' sea del tipo correcto.
+      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(trigger => {
+        // CAMBIO: Usamos una arrow function para evitar el problema con 'this'.
+        trigger.addEventListener('click', (e: MouseEvent) => {
+          // 1. Previene el comportamiento por defecto del enlace
+          e.preventDefault();
+
+          // CAMBIO: Usamos 'trigger' en lugar de 'this'.
+          const targetId = trigger.getAttribute('href');
+          if (!targetId) return; // Salimos si el href está vacío
+          
+          const elementoDestino = document.querySelector(targetId);
+
+          if (elementoDestino) {
+            const posicionInicial = window.scrollY;
+            const offset = 0;
+            const posicionFinal = elementoDestino.getBoundingClientRect().top + posicionInicial - offset;
+            const distancia = posicionFinal - posicionInicial;
+            
+            const duracion = 1500;
+            let startTime: number | null = null; // TIPO AÑADIDO
+
+            // TIPO AÑADIDO para todos los parámetros
+            const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
+              t /= d / 2;
+              if (t < 1) return c / 2 * t * t + b;
+              t--;
+              return -c / 2 * (t * (t - 2) - 1) + b;
+            };
+
+            // TIPO AÑADIDO para 'currentTime'
+            const animacion = (currentTime: number) => {
+              if (startTime === null) startTime = currentTime;
+              const tiempoTranscurrido = currentTime - startTime;
+              
+              const scrollActual = easeInOutQuad(tiempoTranscurrido, posicionInicial, distancia, duracion);
+              
+              window.scrollTo(0, scrollActual);
+
+              if (tiempoTranscurrido < duracion) {
+                requestAnimationFrame(animacion);
+              }
+            };
+
+            requestAnimationFrame(animacion);
+          }
+        });
+      });
+    </script>
+    
     <slot name="scripts" />
   </body>
 </html>
