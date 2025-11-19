@@ -1,113 +1,272 @@
 ---
-
 const navLinks = [
-  { href: "/", text: "Home" },
-  { href: "/#skills-section", text: "Skills" },
-  { href: "/projects", text: "Projects" },
-  { href: "/contact", text: "Contact" },
+  { id: "01", href: "/#hero-section", text: "Home", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" },
+  { id: "02", href: "/#experience", text: "Experience", img: "https://images.unsplash.com/photo-1492551557933-34265f7af79e?q=80&w=600&auto=format&fit=crop" },
+  { id: "03", href: "/#skills-section", text: "Skills", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop" },
+  { id: "04", href: "/projects", text: "Projects", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop" },
+  { id: "05", href: "/contact", text: "Contact", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&auto=format&fit=crop" },
 ];
 ---
 
 <section id="navigation-overlay">
-  <nav>
-    <ul>
-      {navLinks.map(link => (
-        <li>
-          <a class="nav-link" href={link.href} data-text={link.text}>
+  <!-- Capa de Ruido (Mantenemos el ambiente) -->
+  <div class="noise-bg"></div>
+  <svg style="display: none;">
+    <filter id="navNoiseFilter">
+      <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+    </filter>
+  </svg>
+
+  <!-- Contenedor Principal -->
+  <nav class="nav-container" id="parallax-container">
+    {navLinks.map((link, index) => (
+      <a 
+        href={link.href} 
+        class="poster-card group" 
+        data-speed={index % 2 === 0 ? "10" : "-10"} 
+      >
+        <!-- Encabezado -->
+        <div class="card-header">
+          <span class="link-id">{link.id}</span>
+          <div class="poster-title" data-text={link.text}>
             {link.text}
-          </a>
-        </li>
-      ))}
-    </ul>
+          </div>
+        </div>
+
+        <!-- Contenedor de Imagen (Limpio, sin glitch) -->
+        <div class="poster-image-wrapper">
+          <img 
+            src={link.img} 
+            alt={link.text} 
+            class="poster-img" 
+            loading="lazy" 
+          />
+          <!-- Overlay para oscurecer en reposo -->
+          <div class="img-overlay"></div>
+        </div>
+
+        <div class="view-label">EXPLORE</div>
+      </a>
+    ))}
   </nav>
 </section>
 
 <style>
+  /* VARIABLES */
+  #navigation-overlay {
+    --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+    font-family: 'Geist Mono', monospace;
+  }
+
   #navigation-overlay {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #131313;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: #050505;
     z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
     transform: translateY(-100%);
-    transition: transform 1s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+    transition: transform 1s var(--ease-out-expo);
   }
 
   body.menu-is-open #navigation-overlay {
-    transform: translateY(0);
+    transform: translateY(0%);
   }
 
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    text-align: center;
+  /* RUIDO DE FONDO */
+  .noise-bg {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; opacity: 0.07;
+  }
+  .noise-bg::after {
+    content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
+    filter: url(#navNoiseFilter); animation: noiseAnimation 0.5s steps(5) infinite;
+  }
+  @keyframes noiseAnimation {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(10%, 10%); }
   }
 
-  li {
-    margin: 1.5rem 0;
+  /* LAYOUT */
+  .nav-container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 90%; height: 60vh;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0 2vw;
   }
 
-  .nav-link {
-    font-family: 'Geist Mono', monospace;
-    font-size: clamp(2rem, 8vw, 4rem);
-    color: #ddd;
-    text-decoration: none;
-    text-transform: uppercase;
-    display: inline-block;
+  /* TARJETA */
+  .poster-card {
+    position: relative;
+    width: 18%;
+    height: 100%; max-height: 500px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    text-decoration: none; cursor: pointer;
+    transition: transform 0.1s linear; 
+  }
+
+  /* HEADER TEXTOS */
+  .card-header {
+    position: absolute; top: -60px; left: 0; width: 100%;
+    display: flex; flex-direction: column; align-items: flex-start;
+    z-index: 10; pointer-events: none;
+  }
+  .link-id {
+    font-size: 0.8rem; color: #555; margin-bottom: 5px; font-weight: bold;
+    transition: color 0.3s;
+  }
+  .poster-card:hover .link-id { color: #fff; }
+  
+  .poster-title {
+    font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+    color: #fff; letter-spacing: -0.02em; overflow: hidden;
+  }
+
+  /* IMAGEN WRAPPER */
+  .poster-image-wrapper {
+    position: relative;
+    width: 100%; height: 100%;
     overflow: hidden;
+    background: #111;
+    border: 1px solid #333; /* Borde sutil por defecto */
+    transition: transform 0.6s var(--ease-out-expo), border-color 0.3s;
   }
 
-  .char {
-    display: inline-block;
-    transform: translateY(120%);
-    transition: transform 0.8s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+  .poster-card:hover .poster-image-wrapper {
+    border-color: #fff; /* Borde blanco al hover */
+    transform: scale(1.02); /* Ligero pop del contenedor */
+    z-index: 20;
   }
 
-  body.menu-is-open .char {
+  /* LA IMAGEN EN SÍ */
+  .poster-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    
+    /* ESTADO NORMAL: Blanco y negro, un poco oscura */
+    filter: grayscale(100%) brightness(0.7);
+    transform: scale(1);
+    transition: filter 0.5s ease, transform 0.7s var(--ease-out-expo);
+  }
+
+  /* ESTADO HOVER: Full color, brillo normal, zoom in */
+  .poster-card:hover .poster-img {
+    filter: grayscale(0%) brightness(1.1);
+    transform: scale(1.15); /* Zoom suave hacia adentro */
+  }
+
+  /* OVERLAY NEGRO */
+  /* Ayuda a que el texto se lea mejor cuando no hay hover */
+  .img-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
+    opacity: 0.5;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  
+  /* Al hacer hover, quitamos la oscuridad para ver la foto viva */
+  .poster-card:hover .img-overlay {
+    opacity: 0;
+  }
+
+  /* VIEW LABEL */
+  .view-label {
+    position: absolute; bottom: 20px; right: 10px;
+    font-size: 0.6rem; color: #fff; letter-spacing: 0.2em;
+    opacity: 0; transform: translateY(10px);
+    transition: all 0.3s ease; z-index: 5;
+    mix-blend-mode: difference;
+  }
+  .poster-card:hover .view-label {
+    opacity: 1; transform: translateY(0);
+  }
+
+  /* ANIMACIÓN TEXTO */
+  :global(.char) {
+    display: inline-block; transform: translateY(100%);
+    transition: transform 0.5s var(--ease-out-expo);
+  }
+  body.menu-is-open :global(.char) {
     transform: translateY(0);
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 1024px) {
+    .nav-container {
+      flex-wrap: wrap; justify-content: center; gap: 2rem;
+      height: auto; padding-top: 10vh;
+    }
+    .poster-card { width: 40%; height: 300px; margin-bottom: 30px; }
+    .card-header { top: -40px; }
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      flex-direction: column; flex-wrap: nowrap;
+      gap: 1.5rem; overflow-y: auto; justify-content: flex-start;
+    }
+    .poster-card { width: 100%; height: 200px; transform: none !important; }
+    /* En móvil mostramos un poco de color siempre */
+    .poster-img { filter: grayscale(50%) brightness(0.8); }
+    .poster-card:hover .poster-img { filter: grayscale(0%) brightness(1); }
   }
 </style>
 
 <script>
-  function splitTextIntoChars(linkElement: HTMLElement) {
-    const text = linkElement.dataset.text || '';
-    linkElement.innerHTML = '';
+  function splitTextIntoChars(element: HTMLElement) {
+    const text = element.dataset.text || '';
+    element.innerHTML = '';
     let charIndex = 0;
-
-    text.split(' ').forEach((word, wordIndex) => {
-      const wordSpan = document.createElement('span');
+    text.split(' ').forEach((word) => {
+      const wordSpan = document.createElement('div');
       wordSpan.style.display = 'inline-block';
-      wordSpan.style.marginRight = '0.5em';
-
+      wordSpan.style.marginRight = '0.3em';
+      wordSpan.style.overflow = 'hidden'; 
       word.split('').forEach(char => {
         const charSpan = document.createElement('span');
         charSpan.className = 'char';
         charSpan.textContent = char;
-        charSpan.style.transitionDelay = `${charIndex * 40}ms`;
+        charSpan.style.transitionDelay = `${charIndex * 20 + 200}ms`;
         wordSpan.appendChild(charSpan);
         charIndex++;
       });
-      linkElement.appendChild(wordSpan);
+      element.appendChild(wordSpan);
+    });
+  }
+
+  function initMouseEffect() {
+    const container = document.getElementById('navigation-overlay');
+    const cards = document.querySelectorAll('.poster-card');
+    if (!container) return;
+
+    container.addEventListener('mousemove', (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * 2; 
+      cards.forEach((card) => {
+        const speed = parseFloat((card as HTMLElement).dataset.speed || "10");
+        (card as HTMLElement).style.transform = `translateX(${x * speed}px)`;
+      });
     });
   }
   
   function initNavMenu() {
-    const navLinks = document.querySelectorAll<HTMLElement>('.nav-link');
-    navLinks.forEach(splitTextIntoChars);
+    const navTitles = document.querySelectorAll<HTMLElement>('.poster-title');
+    navTitles.forEach(splitTextIntoChars);
 
+    const navLinks = document.querySelectorAll('.poster-card');
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
         document.body.classList.remove('menu-is-open');
       });
     });
+
+    if (window.matchMedia("(min-width: 769px)").matches) {
+      initMouseEffect();
+    }
   }
 
   document.addEventListener('astro:page-load', initNavMenu);
+  if (document.readyState === 'complete') initNavMenu();
+  else document.addEventListener('DOMContentLoaded', initNavMenu);
 </script>

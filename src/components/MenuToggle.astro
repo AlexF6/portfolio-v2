@@ -1,9 +1,9 @@
 ---
-// Este componente es autocontenido.
+// src/components/MenuToggle.astro
 ---
 
 <div id="cont_menu">
-  <a role="button" id="menu" href="#">
+  <a role="button" id="menu" aria-label="Toggle Menu">
     <div id="text_menu">
       <div class="inner-text">
         <div>menu</div>
@@ -21,9 +21,10 @@
   #cont_menu {
     position: fixed;
     top: 2rem;
-    right: 2rem;
+    right: 3rem;
     z-index: 1001;
-    mix-blend-mode: difference;
+    /* Esto invierte el color dependiendo del fondo: Blanco sobre negro, Negro sobre blanco */
+    mix-blend-mode: difference; 
     color: white;
   }
 
@@ -36,25 +37,31 @@
     color: inherit;
     font-family: 'Geist Mono', monospace;
     text-transform: uppercase;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    font-weight: 600;
   }
   
   #text_menu {
     height: 1.2em;
     overflow: hidden;
+    text-align: right;
   }
 
   .inner-text {
-    transition: transform 0.6s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2em;
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); /* Expo easing más elegante */
   }
 
   body.menu-is-open #text_menu .inner-text {
-    transform: translateY(-100%);
+    transform: translateY(-50%);
   }
 
   #burger {
-    width: 20px;
-    height: 16px;
+    width: 40px; /* Ligeramente más pequeño para ser elegante */
+    height: 12px;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -66,16 +73,16 @@
     width: 100%;
     height: 2px;
     background-color: currentColor;
-    transition: transform 0.6s cubic-bezier(0.73, 0.01, 0.36, 0.98);
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   body.menu-is-open #burger span:nth-child(1) {
     transform-origin: center;
-    transform: translateY(7px) rotate(45deg);
+    transform: translateY(5px) rotate(45deg);
   }
   body.menu-is-open #burger span:nth-child(2) {
     transform-origin: center;
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-5px) rotate(-45deg);
   }
 </style>
 
@@ -85,7 +92,6 @@
   if (menuButton) {
     menuButton.addEventListener('click', (e) => {
       e.preventDefault();
-      // CAMBIO: Se alterna una clase en el <body>
       document.body.classList.toggle('menu-is-open');
     });
   }

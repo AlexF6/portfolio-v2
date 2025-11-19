@@ -14,93 +14,74 @@ const { title, description = "Welcome to my website" } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="bg-black text-gray-300">
+<html lang="en" class="bg-black text-gray-400">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-
     <title>{title}</title>
-
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-
-    <!-- Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@100..900&display=swap" rel="stylesheet">
-    <script
-      type="module"
-      src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"
-    ></script>
-
-    <!-- Slot for additional head content -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <slot name="head" />
   </head>
 
-  <body class="min-h-screen bg-black text-gray-300">
+  <body class="min-h-screen relative selection:bg-lime-300 selection:text-black">
+    
+    <!-- FONDO GLOBAL (Ahora más neutro y elegante) -->
+    <div class="fixed inset-0 z-[-1] pointer-events-none">
+      <!-- CAMBIO: Gradiente blanco/gris muy sutil (opacity 0.1) en lugar de verde -->
+      <div class="absolute inset-0 bg-zinc-950 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,255,255,0.08),rgba(255,255,255,0))]"></div>
+      
+      <!-- Efecto de Ruido -->
+      <div class="noise-bg"></div>
+    </div>
+
+    <svg style="display: none;">
+      <filter id="globalNoiseFilter">
+        <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+      </filter>
+    </svg>
+
     <MenuToggle/>
     <NavigationMenu/>
-    <!-- Header -->
-    <header>
-    </header>
 
-    <!-- Main Content -->
-    <main>
+    <main class="relative z-10">
       <slot />
     </main>
 
-    <!-- Footer -->
-    <footer>
-    </footer>
-      <CustomCursor />
+    <CustomCursor />
 
-    <!-- SCRIPT CON TIPADO CORREGIDO -->
+    <!-- Script de Scroll (Sin cambios) -->
     <script>
-      // Especificamos que buscamos elementos <a> para que 'trigger' sea del tipo correcto.
       document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(trigger => {
-        // CAMBIO: Usamos una arrow function para evitar el problema con 'this'.
         trigger.addEventListener('click', (e: MouseEvent) => {
-          // 1. Previene el comportamiento por defecto del enlace
           e.preventDefault();
-
-          // CAMBIO: Usamos 'trigger' en lugar de 'this'.
           const targetId = trigger.getAttribute('href');
-          if (!targetId) return; // Salimos si el href está vacío
-          
+          if (!targetId) return;
           const elementoDestino = document.querySelector(targetId);
-
           if (elementoDestino) {
             const posicionInicial = window.scrollY;
             const offset = 0;
             const posicionFinal = elementoDestino.getBoundingClientRect().top + posicionInicial - offset;
             const distancia = posicionFinal - posicionInicial;
-            
             const duracion = 1500;
-            let startTime: number | null = null; // TIPO AÑADIDO
-
-            // TIPO AÑADIDO para todos los parámetros
+            let startTime: number | null = null;
             const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
               t /= d / 2;
               if (t < 1) return c / 2 * t * t + b;
               t--;
               return -c / 2 * (t * (t - 2) - 1) + b;
             };
-
-            // TIPO AÑADIDO para 'currentTime'
             const animacion = (currentTime: number) => {
               if (startTime === null) startTime = currentTime;
               const tiempoTranscurrido = currentTime - startTime;
-              
               const scrollActual = easeInOutQuad(tiempoTranscurrido, posicionInicial, distancia, duracion);
-              
               window.scrollTo(0, scrollActual);
-
-              if (tiempoTranscurrido < duracion) {
-                requestAnimationFrame(animacion);
-              }
+              if (tiempoTranscurrido < duracion) requestAnimationFrame(animacion);
             };
-
             requestAnimationFrame(animacion);
           }
         });
@@ -110,3 +91,23 @@ const { title, description = "Welcome to my website" } = Astro.props;
     <slot name="scripts" />
   </body>
 </html>
+
+<style>
+  .noise-bg {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    opacity: 0.05;
+    filter: url(#globalNoiseFilter);
+  }
+  .noise-bg::after {
+    content: "";
+    position: absolute;
+    top: -100%; left: -100%; width: 300%; height: 300%;
+    background: transparent;
+    animation: noiseAnimation 0.5s steps(10) infinite;
+  }
+  @keyframes noiseAnimation {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(10%, 10%); }
+  }
+</style>

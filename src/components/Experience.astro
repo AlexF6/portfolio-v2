@@ -1,0 +1,78 @@
+---
+// src/components/Experience.astro
+
+const experiences = [
+  {
+    year: "2025",
+    title: "Front-End Developer",
+    company: "Abatech",
+    description: "Developing modern user interfaces and optimizing web performance."
+  },
+  // Agrega más experiencias aquí
+];
+
+const education = [
+  {
+    year: "2022 - Present",
+    title: "Technology in Software Development",
+    institution: "Instituto Tecnológico Metropolitano de Medellín"
+  }
+];
+---
+
+<section id="experience" class="relative pb-12 pt-12 px-6 lg:px-12 overflow-hidden">
+  <!-- Decoración de fondo sutil (Glow lateral) -->
+  <div class="absolute top-1/2 left-0 w-64 h-64 rounded-full blur-[100px] -translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+  <div class="max-w-[1200px] lg:px-8 mx-auto w-full relative z-10">
+    <div class="grid lg:grid-cols-2 gap-16">
+
+      <!-- EXPERIENCE COLUMN -->
+      <div>
+        <h3 class="flex items-center justify-center gap-3 text-3xl font-bold text-lime-300 mb-10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+          Experience
+        </h3>
+
+        <div class="space-y-10 border-l border-zinc-800 ml-3 pl-10 relative">
+          {experiences.map((exp) => (
+            <div class="relative group">
+              <!-- Punto de línea de tiempo -->
+              <div class="absolute -left-[45px] top-1.5 h-3 w-3 rounded-full bg-zinc-800 border border-zinc-600 group-hover:bg-lime-400 group-hover:border-lime-400 transition-colors duration-300"></div>
+              
+              <div class="flex flex-col mb-2">
+                <span class="text-xs font-mono text-lime-300/80 mb-1">{exp.year}</span>
+                <h4 class="text-xl font-semibold text-white group-hover:text-lime-100 transition-colors">{exp.title}</h4>
+              </div>
+              <div class="text-gray-200 font-medium mb-3">{exp.company}</div>
+              <p class="text-gray-300 text-sm leading-relaxed max-w-md">{exp.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- EDUCATION COLUMN -->
+      <div>
+        <h3 class="flex items-center justify-center gap-3 text-3xl font-bold text-lime-300 mb-10">
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6 4 14"/><path d="M12 6v14"/><path d="M8 8v12"/><path d="M4 4v16"/></svg>
+          Education
+        </h3>
+
+        <div class="space-y-10 border-l border-zinc-800 ml-3 pl-10 relative">
+          {education.map((edu) => (
+            <div class="relative group">
+              <div class="absolute -left-[45px] top-1.5 h-3 w-3 rounded-full bg-zinc-800 border border-zinc-600 group-hover:bg-lime-400 group-hover:border-lime-400 transition-colors duration-300"></div>
+              
+              <div class="flex flex-col mb-2">
+                 <span class="text-xs font-mono text-lime-300/80 mb-1">{edu.year}</span>
+                 <h4 class="text-xl font-semibold text-white group-hover:text-lime-100 transition-colors">{edu.title}</h4>
+              </div>
+              <p class="text-gray-300 text-sm">{edu.institution}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
