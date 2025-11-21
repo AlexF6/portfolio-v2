@@ -17,8 +17,9 @@ const EMAIL = "contact-portfolioxzx.economy604@aleeas.com";
       <!--  Left column: Email address + Social media links -->
       <div class="md:col-span-2 flex flex-col gap-6">
         
-        <div class="relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 transition-colors hover:border-lime-500/30">
-          <div class="absolute inset-0 bg-linear-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <!-- Email Card -->
+        <div class="contact-card opacity-0 translate-y-12 relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 transition-all duration-700 ease-out hover:border-lime-500/30">
+          <div class="absolute inset-0 bg-gradient-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div class="relative z-10 p-6 flex flex-col h-full justify-between gap-4">
             <div>
@@ -49,10 +50,9 @@ const EMAIL = "contact-portfolioxzx.economy604@aleeas.com";
           </div>
         </div>
 
-        <!-- Tarjeta Socials -->
-        <div class="relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 p-6 flex-1 transition-colors hover:border-lime-500/30">
-          <!-- Misma capa de gradiente para que coincida -->
-          <div class="absolute inset-0 bg-linear-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <!-- Socials Card -->
+        <div class="contact-card opacity-0 translate-y-12 relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 p-6 flex-1 transition-all duration-700 ease-out hover:border-lime-500/30">
+          <div class="absolute inset-0 bg-gradient-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
           
           <div class="relative z-10">
             <h3 class="text-gray-400 text-sm font-medium mb-4 uppercase tracking-wider">Socials</h3>
@@ -80,10 +80,10 @@ const EMAIL = "contact-portfolioxzx.economy604@aleeas.com";
 
       </div>
 
-      <!-- Right column: Contact card with the same style -->
-      <div class="md:col-span-3 relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 transition-colors hover:border-lime-500/30">
+      <!-- Right column: Contact card -->
+      <div class="contact-card opacity-0 translate-y-12 md:col-span-3 relative group overflow-hidden rounded-3xl border border-zinc-700/50 bg-zinc-900/20 transition-all duration-700 ease-out hover:border-lime-500/30">
 
-        <div class="absolute inset-0 bg-linear-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-zinc-900/0 via-zinc-900/0 to-lime-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
         
         <svg class="absolute -bottom-10 -right-10 w-64 h-64 text-zinc-800/50 rotate-12 group-hover:rotate-6 group-hover:text-lime-500/5 transition-all duration-500" fill="currentColor" viewBox="0 0 24 24">
           <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
@@ -108,7 +108,7 @@ const EMAIL = "contact-portfolioxzx.economy604@aleeas.com";
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>
               </span>
-              <div class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-linear-to-r from-transparent via-white/30 to-transparent z-0"></div>
+              <div class="absolute inset-0 -translate-x-full group-hover/btn:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent z-0"></div>
             </a>
           </div>
         </div>
@@ -119,6 +119,26 @@ const EMAIL = "contact-portfolioxzx.economy604@aleeas.com";
 </section>
 
 <script>
+  // --- SCROLL ANIMATION LOGIC ---
+  document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.contact-card');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, index) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => {
+            entry.target.classList.remove('opacity-0', 'translate-y-12');
+            entry.target.classList.add('opacity-100', 'translate-y-0');
+          }, index * 150);
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => observer.observe(card));
+  });
+
+  // --- COPY EMAIL LOGIC (EXISTING) ---
   const copyBtn = document.getElementById('copy-email-btn');
   const iconMail = document.getElementById('icon-mail');
   const iconCheck = document.getElementById('icon-check');

@@ -1,23 +1,22 @@
 ---
 const navLinks = [
-  { id: "01", href: "/#hero-section", text: "Home", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=600&auto=format&fit=crop" },
-  { id: "02", href: "/#experience-section", text: "Experience", img: "https://images.unsplash.com/photo-1492551557933-34265f7af79e?q=80&w=600&auto=format&fit=crop" },
-  { id: "03", href: "/#skills-section", text: "Skills", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=600&auto=format&fit=crop" },
-  { id: "04", href: "/#projects-section", text: "Projects", img: "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=600&auto=format&fit=crop" },
-  { id: "05", href: "/#contact-section", text: "Contact", img: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?q=80&w=600&auto=format&fit=crop" },
+  { id: "01", href: "/#hero-section", text: "Home", img: "/images/projects/home.webp" },
+  { id: "02", href: "/#experience-section", text: "Experience", img: "/images/projects/exp.webp" },
+  { id: "03", href: "/#skills-section", text: "Skills", img: "/images/projects/skills.webp" },
+  { id: "04", href: "/#projects-section", text: "Projects", img: "/images/projects/projects.webp" },
+  { id: "05", href: "/#contact-section", text: "Contact", img: "/images/projects/contact.webp" },
 ];
 ---
 
 <section id="navigation-overlay">
-  <!-- Noise Layer (We maintain the atmosphere) -->
   <div class="noise-bg"></div>
+  <!-- SVG Filter kept same -->
   <svg style="display: none;">
     <filter id="navNoiseFilter">
       <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
     </filter>
   </svg>
 
-  <!-- Main Container -->
   <nav class="nav-container" id="parallax-container">
     {navLinks.map((link, index) => (
       <a 
@@ -28,12 +27,13 @@ const navLinks = [
         <!-- Header -->
         <div class="card-header">
           <span class="link-id">{link.id}</span>
+          <!-- data-text used for JS animation -->
           <div class="poster-title" data-text={link.text}>
             {link.text}
           </div>
         </div>
 
-        <!-- Image Container (Clean, no glitch) -->
+        <!-- Image Container -->
         <div class="poster-image-wrapper">
           <img 
             src={link.img} 
@@ -41,8 +41,13 @@ const navLinks = [
             class="poster-img" 
             loading="lazy" 
           />
-          <!-- Overlay to darken when idle -->
           <div class="img-overlay"></div>
+        </div>
+
+        <!-- Mobile/Overlay Text Duplicate (For better visibility on small screens) -->
+        <div class="mobile-label">
+          <span>{link.text}</span>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </div>
 
         <div class="view-label">EXPLORE</div>
@@ -52,31 +57,27 @@ const navLinks = [
 </section>
 
 <style>
-  /* VARIABLES */
   #navigation-overlay {
     --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
     font-family: 'Geist Mono', monospace;
-  }
-
-  #navigation-overlay {
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
+    inset: 0;
     background-color: #050505;
     z-index: 1000;
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
     transform: translateY(-100%);
-    transition: transform 1s var(--ease-out-expo);
+    transition: transform 0.8s var(--ease-out-expo);
   }
 
   body.menu-is-open #navigation-overlay {
     transform: translateY(0%);
   }
 
-  /* BACKGROUND NOISE */
+  /* Noise Background */
   .noise-bg {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    pointer-events: none; z-index: 0; opacity: 0.07;
+    position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: 0.07;
   }
   .noise-bg::after {
     content: ""; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%;
@@ -87,42 +88,47 @@ const navLinks = [
     100% { transform: translate(10%, 10%); }
   }
 
-  /* LAYOUT */
+  /* --- LAYOUT CONTAINER --- */
   .nav-container {
     position: relative; z-index: 1;
-    width: 100%; max-width: 90%; height: 60vh;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 0 2vw;
+    width: 100%; max-width: 1600px; height: 60vh;
+    display: flex; justify-content: center; align-items: center;
+    gap: 1.5vw;
+    padding: 0 4vw;
   }
 
-  /* CARD */
+  /* --- CARD COMPONENT --- */
   .poster-card {
     position: relative;
-    width: 18%;
+    flex: 1;
     height: 100%; max-height: 500px;
     display: flex; flex-direction: column; justify-content: flex-end;
     text-decoration: none; cursor: pointer;
     transition: transform 0.1s linear; 
+    /* Fix for mobile tap highlight */
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* HEADER TEXTS */
+  /* 1. HEADER (Text Above) */
   .card-header {
-    position: absolute; top: -60px; left: 0; width: 100%;
+    position: absolute; top: -70px; left: 0; width: 100%;
     display: flex; flex-direction: column; align-items: flex-start;
     z-index: 10; pointer-events: none;
   }
   .link-id {
-    font-size: 0.8rem; color: #555; margin-bottom: 5px; font-weight: bold;
+    font-size: 0.75rem; color: #555; margin-bottom: 0.5rem; font-weight: bold;
     transition: color 0.3s;
   }
   .poster-card:hover .link-id { color: #fff; }
   
   .poster-title {
-    font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+    font-size: clamp(1.5rem, 2vw, 2.5rem); 
+    font-weight: 800; text-transform: uppercase;
     color: #fff; letter-spacing: -0.02em; overflow: hidden;
+    line-height: 1;
   }
 
-  /* IMAGEN WRAPPER */
+  /* 2. IMAGE WRAPPER */
   .poster-image-wrapper {
     position: relative;
     width: 100%; height: 100%;
@@ -132,16 +138,17 @@ const navLinks = [
     transition: transform 0.6s var(--ease-out-expo), border-color 0.3s;
   }
 
-  .poster-card:hover .poster-image-wrapper {
-    border-color: #fff;
-    transform: scale(1.02);
-    z-index: 20;
+  /* Desktop Hover Effect */
+  @media (min-width: 769px) {
+    .poster-card:hover .poster-image-wrapper {
+      border-color: #fff;
+      transform: scale(1.02);
+      z-index: 20;
+    }
   }
 
-  /* THE IMAGE ITSELF */
   .poster-img {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     object-fit: cover;
     filter: grayscale(100%) brightness(0.7);
     transform: scale(1);
@@ -156,16 +163,11 @@ const navLinks = [
   .img-overlay {
     position: absolute; inset: 0;
     background: linear-gradient(to top, rgba(0,0,0,0.6), transparent);
-    opacity: 0.5;
-    transition: opacity 0.4s;
-    pointer-events: none;
+    opacity: 0.5; transition: opacity 0.4s; pointer-events: none;
   }
-  
-  .poster-card:hover .img-overlay {
-    opacity: 0;
-  }
+  .poster-card:hover .img-overlay { opacity: 0; }
 
-  /* VIEW LABEL */
+  /* 3. VIEW LABEL (Desktop Only) */
   .view-label {
     position: absolute; bottom: 20px; right: 10px;
     font-size: 0.6rem; color: #fff; letter-spacing: 0.2em;
@@ -173,43 +175,108 @@ const navLinks = [
     transition: all 0.3s ease; z-index: 5;
     mix-blend-mode: difference;
   }
-  .poster-card:hover .view-label {
-    opacity: 1; transform: translateY(0);
-  }
+  .poster-card:hover .view-label { opacity: 1; transform: translateY(0); }
+
+  /* 4. MOBILE LABEL (Initially Hidden) */
+  .mobile-label { display: none; }
 
   /* TEXT ANIMATION */
   :global(.char) {
     display: inline-block; transform: translateY(100%);
     transition: transform 0.5s var(--ease-out-expo);
   }
-  body.menu-is-open :global(.char) {
-    transform: translateY(0);
-  }
+  body.menu-is-open :global(.char) { transform: translateY(0); }
   
-  /* RESPONSIVE */
+  /* --- RESPONSIVE BREAKPOINTS --- */
+
+  /* TABLET (1024px and down) */
   @media (max-width: 1024px) {
     .nav-container {
-      flex-wrap: wrap; justify-content: center; gap: 2rem;
-      height: auto; padding-top: 10vh;
+      flex-wrap: wrap; 
+      height: auto;
+      padding: 10vh 4vw;
+      gap: 2rem;
+      overflow-y: auto;
+      max-height: 100vh;
     }
-    .poster-card { width: 40%; height: 300px; margin-bottom: 30px; }
-    .card-header { top: -40px; }
+    /* Make it a 2-column grid look */
+    .poster-card { 
+      flex: 0 0 45%; 
+      height: 350px; 
+      margin-bottom: 3rem; 
+    }
+    .card-header { top: -45px; }
   }
 
+  /* MOBILE (768px and down) */
   @media (max-width: 768px) {
-    .nav-container {
-      flex-direction: column; flex-wrap: nowrap;
-      gap: 1.5rem; overflow-y: auto; justify-content: flex-start;
+    #navigation-overlay {
+      align-items: flex-start; /* Align to top so scrolling works */
+      overflow-y: auto; /* Allow scroll on overlay container */
     }
-    .poster-card { width: 100%; height: 200px; transform: none !important; }
-    /* On mobile devices */
-    .poster-img { filter: grayscale(50%) brightness(0.8); }
-    .poster-card:hover .poster-img { filter: grayscale(0%) brightness(1); }
+
+    .nav-container {
+      flex-direction: column;
+      flex-wrap: nowrap;
+      justify-content: flex-start;
+      height: auto;
+      min-height: 100%; /* Ensure full scroll */
+      padding: 80px 5vw 40px 5vw; /* Top padding accounts for fixed headers */
+      gap: 1rem;
+    }
+
+    .poster-card {
+      width: 100%;
+      /* Banner shape instead of tall card */
+      height: 140px; 
+      margin-bottom: 0;
+      transform: none !important; /* Disable JS parallax */
+    }
+
+    /* Hide the floating header text on mobile */
+    .card-header { display: none; }
+    
+    /* Hide the 'EXPLORE' hover label */
+    .view-label { display: none; }
+
+    /* Show internal mobile label */
+    .mobile-label {
+      display: flex; align-items: center; justify-content: space-between;
+      position: absolute; bottom: 15px; left: 15px; right: 15px;
+      z-index: 30;
+      color: white;
+      font-size: 1.5rem; font-weight: 700; text-transform: uppercase;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    }
+
+    .poster-image-wrapper {
+      border-radius: 8px; /* Softer look on mobile */
+      border: 1px solid rgba(255,255,255,0.2);
+    }
+
+    /* Make image colorful by default on mobile (no hover needed) */
+    .poster-img {
+      filter: grayscale(0%) brightness(0.8);
+    }
+    
+    /* Darker overlay for text legibility */
+    .img-overlay {
+      opacity: 0.4;
+      background: linear-gradient(to right, rgba(0,0,0,0.8), transparent);
+    }
+  }
+
+  /* Landscape Mobile adjustments */
+  @media (max-height: 500px) and (orientation: landscape) {
+    .nav-container { padding-top: 20px; grid-template-columns: 1fr 1fr; display: grid;}
+    .poster-card { height: 120px; }
   }
 </style>
 
 <script>
+  // --- TEXT SPLIT UTILITY ---
   function splitTextIntoChars(element: HTMLElement) {
+    if(element.innerHTML.includes('span')) return; // Prevent double split
     const text = element.dataset.text || '';
     element.innerHTML = '';
     let charIndex = 0;
@@ -222,7 +289,8 @@ const navLinks = [
         const charSpan = document.createElement('span');
         charSpan.className = 'char';
         charSpan.textContent = char;
-        charSpan.style.transitionDelay = `${charIndex * 20 + 200}ms`;
+        // Stagger delay
+        charSpan.style.transitionDelay = `${charIndex * 30 + 150}ms`;
         wordSpan.appendChild(charSpan);
         charIndex++;
       });
@@ -230,24 +298,37 @@ const navLinks = [
     });
   }
 
+  // --- PARALLAX EFFECT ---
+  let mouseHandler: ((e: MouseEvent) => void) | null = null;
+
   function initMouseEffect() {
     const container = document.getElementById('navigation-overlay');
-    const cards = document.querySelectorAll('.poster-card');
+    const cards = document.querySelectorAll<HTMLElement>('.poster-card');
     if (!container) return;
 
-    container.addEventListener('mousemove', (e) => {
+    // Clean up previous listener if exists
+    if (mouseHandler) container.removeEventListener('mousemove', mouseHandler);
+
+    mouseHandler = (e) => {
+      // Calculate normalized position (-1 to 1)
       const x = (e.clientX / window.innerWidth - 0.5) * 2; 
       cards.forEach((card) => {
-        const speed = parseFloat((card as HTMLElement).dataset.speed || "10");
-        (card as HTMLElement).style.transform = `translateX(${x * speed}px)`;
+        const speed = parseFloat(card.dataset.speed || "10");
+        // Only apply transform if visible/desktop
+        card.style.transform = `translateX(${x * speed}px)`;
       });
-    });
+    };
+
+    container.addEventListener('mousemove', mouseHandler);
   }
   
+  // --- MAIN INIT ---
   function initNavMenu() {
+    // 1. Prepare Text
     const navTitles = document.querySelectorAll<HTMLElement>('.poster-title');
     navTitles.forEach(splitTextIntoChars);
 
+    // 2. Close on Click
     const navLinks = document.querySelectorAll('.poster-card');
     navLinks.forEach(link => {
       link.addEventListener('click', () => {
@@ -255,12 +336,28 @@ const navLinks = [
       });
     });
 
-    if (window.matchMedia("(min-width: 769px)").matches) {
+    // 3. Initialize Parallax ONLY on desktop (performance + logic)
+    if (window.matchMedia("(min-width: 1025px)").matches) {
       initMouseEffect();
+    } else {
+      // Ensure cards are reset if resized from desktop to mobile
+      navLinks.forEach((link) => {
+        (link as HTMLElement).style.transform = 'none';
+      });
     }
   }
 
+  // Astro view transition support
   document.addEventListener('astro:page-load', initNavMenu);
+  
+  // Standard Load
   if (document.readyState === 'complete') initNavMenu();
   else document.addEventListener('DOMContentLoaded', initNavMenu);
+  
+  // Handle Resize (Debounced is better, but simple here)
+  window.addEventListener('resize', () => {
+     if (window.matchMedia("(min-width: 1025px)").matches) {
+        initMouseEffect();
+     }
+  });
 </script>

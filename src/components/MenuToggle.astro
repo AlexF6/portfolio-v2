@@ -23,9 +23,16 @@
     top: 2rem;
     right: 3rem;
     z-index: 1001;
-    /* Esto invierte el color dependiendo del fondo: Blanco sobre negro, Negro sobre blanco */
+    /* Inverts color based on background */
     mix-blend-mode: difference; 
     color: white;
+  }
+
+  /* --- ADDED: Hide on screens smaller than 768px --- */
+  @media (max-width: 768px) {
+    #cont_menu {
+      display: none;
+    }
   }
 
   #menu {
@@ -52,7 +59,7 @@
     display: flex;
     flex-direction: column;
     line-height: 1.2em;
-    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); /* Expo easing más elegante */
+    transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
   }
 
   body.menu-is-open #text_menu .inner-text {
@@ -60,7 +67,7 @@
   }
 
   #burger {
-    width: 40px; /* Ligeramente más pequeño para ser elegante */
+    width: 40px;
     height: 12px;
     position: relative;
     display: flex;
