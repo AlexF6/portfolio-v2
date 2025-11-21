@@ -3,7 +3,7 @@
 ---
 
 <div id="cont_menu">
-  <a role="button" id="menu" aria-label="Toggle Menu">
+  <button id="menu" type="button" aria-label="Toggle Menu">
     <div id="text_menu">
       <div class="inner-text">
         <div>menu</div>
@@ -14,7 +14,7 @@
       <span></span>
       <span></span>
     </div>
-  </a>
+  </button> <!-- Cierre de button -->
 </div>
 
 <style>
@@ -40,6 +40,11 @@
     align-items: center;
     gap: 0.75rem;
     cursor: pointer;
+    
+    background: none;
+    border: none;
+    padding: 0;
+    
     text-decoration: none;
     color: inherit;
     font-family: 'Geist Mono', monospace;

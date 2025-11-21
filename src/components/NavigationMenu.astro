@@ -1,10 +1,18 @@
 ---
+import { Image } from 'astro:assets';
+
+import homeImg from '../assets/images/projects/home.webp';
+import expImg from '../assets/images/projects/exp.webp';
+import skillsImg from '../assets/images/projects/skills.webp';
+import projectsImg from '../assets/images/projects/projects.webp';
+import contactImg from '../assets/images/projects/contact.webp';
+
 const navLinks = [
-  { id: "01", href: "/#hero-section", text: "Home", img: "/images/projects/home.webp" },
-  { id: "02", href: "/#experience-section", text: "Experience", img: "/images/projects/exp.webp" },
-  { id: "03", href: "/#skills-section", text: "Skills", img: "/images/projects/skills.webp" },
-  { id: "04", href: "/#projects-section", text: "Projects", img: "/images/projects/projects.webp" },
-  { id: "05", href: "/#contact-section", text: "Contact", img: "/images/projects/contact.webp" },
+  { id: "01", href: "/#hero-section", text: "Home", img: homeImg },
+  { id: "02", href: "/#experience-section", text: "Experience", img: expImg },
+  { id: "03", href: "/#skills-section", text: "Skills", img: skillsImg },
+  { id: "04", href: "/#projects-section", text: "Projects", img: projectsImg },
+  { id: "05", href: "/#contact-section", text: "Contact", img: contactImg },
 ];
 ---
 
@@ -24,30 +32,32 @@ const navLinks = [
         class="poster-card group" 
         data-speed={index % 2 === 0 ? "10" : "-10"} 
       >
-        <!-- Header -->
         <div class="card-header">
           <span class="link-id">{link.id}</span>
-          <!-- data-text used for JS animation -->
           <div class="poster-title" data-text={link.text}>
             {link.text}
           </div>
         </div>
 
-        <!-- Image Container -->
         <div class="poster-image-wrapper">
-          <img 
+          <Image 
             src={link.img} 
             alt={link.text} 
-            class="poster-img" 
-            loading="lazy" 
+            class="poster-img"
+            
+            loading={index <= 4 ? "eager" : "lazy"}
+            
+            fetchpriority={index === 0 ? "high" : "auto"}
           />
           <div class="img-overlay"></div>
         </div>
 
-        <!-- Mobile/Overlay Text Duplicate (For better visibility on small screens) -->
+
         <div class="mobile-label">
           <span>{link.text}</span>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
         </div>
 
         <div class="view-label">EXPLORE</div>
