@@ -4,55 +4,30 @@
 const projects = [
   {
     title: "Moontube",
-    description:
-      "Full-stack video streaming platform inspired by Netflix/YouTube, with profiles, watchlists, playback tracking and subscription plans, built to run on a Raspberry Pi backend.",
+    description: "Full-stack video streaming platform inspired by Netflix/YouTube.",
     image: "/images/projects/proj1.webp",
     link: "https://moontube-front.vercel.app",
-    tags: [
-      "Angular",
-      "TypeScript",
-      "Tailwind",
-      "FastAPI",
-      "PostgreSQL",
-      "Docker",
-    ],
-    class: "md:col-span-3 md:row-span-2"
+    repo: "https://github.com/yourusername/moontube", // <--- ADD THIS
+    tags: ["Angular", "TypeScript", "Tailwind", "FastAPI", "PostgreSQL", "Docker"],
+    class: "md:col-span-4 md:row-span-2"
   },
   {
-    title: "NASA Explorer",
-    description: "Interactive dashboard visualizing daily data from NASA's public APIs.",
-    image: "/images/projects/proj1.webp",
-    link: "/projects/nasa-api",
-    tags: ["Astro", "TypeScript"],
-    // Classes for the Bento Grid (Tall Vertical)
-    class: "md:col-span-1 md:row-span-2"
-  },
-  {
-    title: "Promptopia",
-    description: "AI Prompt sharing platform for modern creators.",
-    image: "/images/projects/proj1.webp",
-    link: "/projects/promptopia",
-    tags: ["React", "FastApi", "PostgreSQL"],
-    // Classes for the Bento Grid (Horizontal wide)
+    title: "Elysium",
+    description: "Alternative clothing e-commerce experience.",
+    image: "/images/projects/proj3.png",
+    link: "https://hunter-challenge-adequate-maine.trycloudflare.com",
+    repo: "https://github.com/yourusername/elysium", // <--- ADD THIS
+    tags: ["Ruby On Rails", "JavaScript", "Tailwind", "SQLite", "Docker"],
     class: "md:col-span-2 md:row-span-1"
   },
   {
-    title: "Podcastr",
-    description: "AI-powered podcast platform with text-to-speech generation.",
-    image: "/images/projects/proj1.webp",
-    link: "/projects/podcastr",
-    tags: ["TypeScript", "Tailwind"],
-    // Classes for the Bento Grid (Standard)
-    class: "md:col-span-1 md:row-span-1"
-  },
-  {
-    title: "Dev Tools",
-    description: "VS Code extension helper for context generation.",
-    image: "/images/projects/proj1.webp",
-    link: "/projects/context-creator",
-    tags: ["JavaScript", "Docker"],
-    // Classes for the Bento Grid (Standard)
-    class: "md:col-span-1 md:row-span-1"
+    title: "Paint Ref",
+    description: "Simple drawing playground built with React and Tailwind CSS.",
+    image: "/images/projects/proj2.png",
+    link: "https://easy-draw-nu.vercel.app",
+    repo: "https://github.com/yourusername/paint-ref", // <--- ADD THIS
+    tags: ["React", "Tailwind", "Vite"],
+    class: "md:col-span-2 md:row-span-1"
   }
 ];
 ---
@@ -60,19 +35,15 @@ const projects = [
 <section id="projects-section" class="relative py-24 px-6 lg:px-12">
   <div class="max-w-[1200px] px-8 mx-auto w-full relative z-10">
     
-    <!-- Section header (Same as in Skills) -->    
     <div class="mb-16 text-center">
        <h2 class="text-4xl font-bold text-lime-300 mb-4">Featured Projects</h2>
        <p class="text-gray-300">Some of the things I've built recently.</p>
     </div>
 
-    <!-- Bento Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 auto-rows-[300px] gap-6">
       
       {projects.map((project) => (
-        <a 
-          target="_blank"
-          href={project.link}
+        <div 
           class={`
             group/card relative overflow-hidden rounded-3xl 
             bg-zinc-900/20 border border-zinc-700/50 
@@ -80,12 +51,13 @@ const projects = [
             ${project.class}
           `}
         >
-          <!-- 1. Imagen de Fondo con Efecto Zoom -->
-          <div class="absolute inset-0 w-full h-full overflow-hidden">
-            <!-- Fallback por si no hay imagen: un gradiente oscuro -->
-            <div class="absolute inset-0 bg-linear-to-br from-zinc-800 to-black z-0"></div>
-            
-            <!-- Imagen Real -->
+          <!-- 1. INVISIBLE MAIN LINK (Background Click) -->
+          <!-- This makes clicking the image go to the Live Site (z-20) -->
+          <a href={project.link} target="_blank" class="absolute inset-0 z-20 cursor-pointer" aria-label={`View ${project.title}`}></a>
+
+          <!-- 2. BACKGROUND IMAGE -->
+          <div class="absolute inset-0 w-full h-full overflow-hidden pointer-events-none">
+            <div class="absolute inset-0 bg-gradient-to-br from-zinc-800 to-black z-0"></div>
             <img 
               src={project.image} 
               alt={project.title}
@@ -93,26 +65,52 @@ const projects = [
               loading="lazy"
               onerror="this.style.display='none'" 
             />
-            
-            <!-- Overlay Gradiente para mejorar lectura -->
-            <div class="absolute inset-0 bg-linear-to-t from-zinc-950 via-zinc-950/50 to-transparent z-20"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/50 to-transparent z-20"></div>
           </div>
 
-          <!-- 2. Contenido Flotante (Estilo Referencia) -->
-          <div class="absolute bottom-0 left-0 w-full p-6 z-30 flex flex-col justify-end h-full">
+          <!-- 3. CONTENT BOX -->
+          <!-- We use z-30 to sit ABOVE the invisible link so the buttons inside are clickable -->
+          <div class="absolute bottom-0 left-0 w-full p-6 z-30 flex flex-col justify-end h-full pointer-events-none">
             
-            <!-- Tarjeta de cristal interna -->
-            <div class="bg-zinc-950/60 backdrop-blur-md border border-zinc-700/50 rounded-2xl p-5 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500">
+            <!-- Glass Card (pointer-events-auto allows clicking buttons inside) -->
+            <div class="bg-zinc-950/80 backdrop-blur-md border border-zinc-700/50 rounded-2xl p-5 translate-y-4 group-hover/card:translate-y-0 transition-transform duration-500 pointer-events-auto">
               
-              <h3 class="text-xl font-bold text-white mb-2 group-hover/card:text-lime-300 transition-colors">
-                {project.title}
-              </h3>
+              <!-- Header with Title & Links Row -->
+              <div class="flex items-start justify-between gap-4 mb-2">
+                <h3 class="text-xl font-bold text-white group-hover/card:text-lime-300 transition-colors">
+                  {project.title}
+                </h3>
+
+                <!-- NEW: Action Buttons -->
+                <div class="flex gap-2 shrink-0">
+                  <!-- Repo Link -->
+                  {project.repo && (
+                    <a 
+                      href={project.repo} 
+                      target="_blank" 
+                      class="p-2 bg-zinc-800 hover:bg-zinc-700 hover:text-white text-zinc-400 rounded-lg transition-colors border border-zinc-700 hover:border-zinc-500 relative z-40"
+                      title="View Source Code"
+                    >
+                      <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    </a>
+                  )}
+                  <!-- Live Demo Link -->
+                  <a 
+                    href={project.link} 
+                    target="_blank" 
+                    class="p-2 bg-lime-400/10 hover:bg-lime-400 hover:text-black text-lime-400 rounded-lg transition-colors border border-lime-400/20 hover:border-lime-400 relative z-40"
+                    title="View Live Demo"
+                  >
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  </a>
+                </div>
+              </div>
               
               <p class="text-sm text-gray-300 line-clamp-2 mb-4">
                 {project.description}
               </p>
 
-              <!-- Iconos de Tecnologías -->
+              <!-- Tech Icons (Existing Code) -->
               <div class="flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <div class="p-2 rounded-lg bg-zinc-800/80 border border-zinc-700 group-hover/card:border-lime-500/30 transition-colors" title={tag}>
@@ -144,9 +142,20 @@ const projects = [
                       {tag === "Node.js" && (
                         <svg class="w-full h-full" viewBox="0 0 256 292" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><linearGradient id="nodejs__a" x1="68.188%" x2="27.823%" y1="17.487%" y2="89.755%"><stop offset="0%" stop-color="#41873F"/><stop offset="32.88%" stop-color="#418B3D"/><stop offset="63.52%" stop-color="#419637"/><stop offset="93.19%" stop-color="#3FA92D"/><stop offset="100%" stop-color="#3FAE2A"/></linearGradient><linearGradient id="nodejs__c" x1="43.277%" x2="159.245%" y1="55.169%" y2="-18.306%"><stop offset="13.76%" stop-color="#41873F"/><stop offset="40.32%" stop-color="#54A044"/><stop offset="71.36%" stop-color="#66B848"/><stop offset="90.81%" stop-color="#6CC04A"/></linearGradient><linearGradient id="nodejs__f" x1="-4.389%" x2="101.499%" y1="49.997%" y2="49.997%"><stop offset="9.192%" stop-color="#6CC04A"/><stop offset="28.64%" stop-color="#66B848"/><stop offset="59.68%" stop-color="#54A044"/><stop offset="86.24%" stop-color="#41873F"/></linearGradient><path id="nodejs__b" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/><path id="nodejs__e" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/></defs><path fill="url(#nodejs__a)" d="M134.923 1.832c-4.344-2.443-9.502-2.443-13.846 0L6.787 67.801C2.443 70.244 0 74.859 0 79.745v132.208c0 4.887 2.715 9.502 6.787 11.945l114.29 65.968c4.344 2.444 9.502 2.444 13.846 0l114.29-65.968c4.344-2.443 6.787-7.058 6.787-11.945V79.745c0-4.886-2.715-9.501-6.787-11.944L134.923 1.832Z"/><mask id="nodejs__d" fill="#fff"><use xlink:href="#nodejs__b"/></mask><path fill="url(#nodejs__c)" d="M249.485 67.8 134.65 1.833c-1.086-.542-2.443-1.085-3.529-1.357L2.443 220.912c1.086 1.357 2.444 2.443 3.8 3.258l114.834 65.968c3.258 1.9 7.059 2.443 10.588 1.357L252.47 70.515c-.815-1.086-1.9-1.9-2.986-2.714Z" mask="url(#nodejs__d)"/><mask id="nodejs__g" fill="#fff"><use xlink:href="#nodejs__e"/></mask><path fill="url(#nodejs__f)" d="M249.756 223.898c3.258-1.9 5.701-5.158 6.787-8.687L130.579.204c-3.258-.543-6.787-.272-9.773 1.628L6.786 67.53l122.979 224.238c1.628-.272 3.529-.815 5.158-1.63l114.833-66.239Z" mask="url(#nodejs__g)"/></svg>
                       )}
-                      {/* Default Icon if none match */}
-                      {!["React", "Angular", "FastAPI", "PostgreSQL", "Docker", "Tailwind", "Astro", "TypeScript", "Node.js"].includes(tag) && (
-                        <svg class="w-full h-full text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                      {tag === "JavaScript" && (
+                        <svg class="w-full h-full" viewBox="0 0 1052 1052"><path fill="#f0db4f" d="M0 0h1052v1052H0z"/><path d="M965.9 801.1c-7.7-48-39-88.3-131.7-125.9-32.2-14.8-68.1-25.399-78.8-49.8-3.8-14.2-4.3-22.2-1.9-30.8 6.9-27.9 40.2-36.6 66.6-28.6 17 5.7 33.1 18.801 42.8 39.7 45.4-29.399 45.3-29.2 77-49.399-11.6-18-17.8-26.301-25.4-34-27.3-30.5-64.5-46.2-124-45-10.3 1.3-20.699 2.699-31 4-29.699 7.5-58 23.1-74.6 44-49.8 56.5-35.6 155.399 25 196.1 59.7 44.8 147.4 55 158.6 96.9 10.9 51.3-37.699 67.899-86 62-35.6-7.4-55.399-25.5-76.8-58.4-39.399 22.8-39.399 22.8-79.899 46.1 9.6 21 19.699 30.5 35.8 48.7 76.2 77.3 266.899 73.5 301.1-43.5 1.399-4.001 10.6-30.801 3.199-72.101zm-394-317.6h-98.4c0 85-.399 169.4-.399 254.4 0 54.1 2.8 103.7-6 118.9-14.4 29.899-51.7 26.2-68.7 20.399-17.3-8.5-26.1-20.6-36.3-37.699-2.8-4.9-4.9-8.7-5.601-9-26.699 16.3-53.3 32.699-80 49 13.301 27.3 32.9 51 58 66.399 37.5 22.5 87.9 29.4 140.601 17.3 34.3-10 63.899-30.699 79.399-62.199 22.4-41.3 17.6-91.3 17.4-146.6.5-90.2 0-180.4 0-270.9z" fill="#323330"/></svg>
+                      )}
+                      {tag === "Ruby on Rails" && (
+                        <svg class="w-full h-full" viewBox="0 -6 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd"> <path d="M0-6h32v32H0z"></path> <path fill="#c00" fill-rule="nonzero" d="M.985 19.636s.422-4.163 3.375-9.087c2.954-4.924 7.99-8.65 12.083-9.017 8.144-.816 15.46 6.485 15.46 6.485s-.24.168-.494.38C23.42 2.49 18.54 5.274 17.005 6.02c-7.033 3.925-4.91 13.616-4.91 13.616H.987zM24.137 2.32c-.45-.182-.9-.35-1.364-.505l.056-.93c.885.254 1.237.423 1.363.493l-.056.943zM22.8 5.304c.45.028.915.084 1.393.183l-.056.872c-.464-.1-.928-.155-1.392-.17l.056-.885zM17.597.913c-.407 0-.815.015-1.223.058l-.268-.83c.465-.056.915-.084 1.35-.084l.282.858h-.14zm.676 5.178c.35-.154.76-.31 1.237-.45l.31.93c-.41.125-.817.294-1.225.49l-.323-.97zm-6.386-3.7c-.366.184-.718.395-1.083.62l-.647-.985c.38-.225.745-.42 1.097-.604l.633.97zm2.883 6.33c.252-.323.548-.646.87-.942l.634.957c-.31.323-.59.647-.83 1L14.77 8.72zm-2.04 4.53c.112-.506.24-1.027.422-1.547l1.012.802c-.14.548-.24 1.097-.295 1.645l-1.14-.9zM6.57 6.57c-.34.35-.662.73-.958 1.11L4.53 6.752c.323-.352.674-.704 1.04-1.055l1 .872zm-4.25 6.286c-.224.52-.52 1.21-.702 1.688L0 13.954c.14-.38.436-1.084.703-1.69l1.618.592zm10.2 3.967l1.518.548c.084.663.21 1.28.337 1.83l-1.688-.605c-.07-.422-.14-1.027-.168-1.772z"></path> </g> </g></svg>
+                      )}
+                      {tag === "SQLite" && (
+                        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><defs><linearGradient id="a" x1="-118.318" y1="45.638" x2="-116.751" y2="45.638" gradientTransform="matrix(0, 11.486, 11.486, 0, -510.889, 1363.307)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#97d9f6"></stop><stop offset="0.92" stop-color="#0f80cc"></stop><stop offset="1" stop-color="#0f80cc"></stop></linearGradient></defs><title>file_type_sqlite</title><path d="M23.192,3.242H5.623A2.147,2.147,0,0,0,3.482,5.383V24.759A2.147,2.147,0,0,0,5.623,26.9H17.195C17.063,21.142,19.03,9.968,23.192,3.242Z" style="fill:#0f80cc"></path><path d="M22.554,3.867H5.623A1.518,1.518,0,0,0,4.107,5.383V23.345a42.01,42.01,0,0,1,13.569-2.684A123.555,123.555,0,0,1,22.554,3.867Z" style="fill:url(#a)"></path><path d="M27.29,2.608c-1.2-1.073-2.66-.642-4.1.634-.213.19-.426.4-.638.625A25.4,25.4,0,0,0,17.1,15a10.178,10.178,0,0,1,.634,1.822c.036.14.069.272.1.384.062.265.1.437.1.437s-.022-.083-.113-.346l-.059-.17c-.01-.027-.023-.059-.038-.094-.16-.373-.6-1.16-.8-1.5-.167.493-.315.954-.438,1.371a12.131,12.131,0,0,1,.908,2.8s-.03-.115-.171-.515a19.037,19.037,0,0,0-.9-1.708,4.037,4.037,0,0,0-.264,1.724,6.009,6.009,0,0,1,.493,1.383c.334,1.283.566,2.846.566,2.846s.008.1.02.263a26.145,26.145,0,0,0,.065,3.205,11.362,11.362,0,0,0,.584,3.1l.18-.1a13.859,13.859,0,0,1-.478-4.628,35.269,35.269,0,0,1,1.938-9.688c2.01-5.308,4.8-9.568,7.35-11.6-2.326,2.1-5.474,8.9-6.417,11.418a45.656,45.656,0,0,0-2.254,8A6.211,6.211,0,0,1,21.39,20s1.233-1.521,2.674-3.693a26.206,26.206,0,0,0-2.755.733c-.7.294-.889.394-.889.394a23.939,23.939,0,0,1,4.215-2.007c2.676-4.215,5.592-10.2,2.656-12.824" style="fill:#003b57"></path></g></svg>                      
+                      )}
+                      {tag === "Vite" && (
+                        <svg viewBox="0 0 256 257" preserveAspectRatio="xMidYMid"><defs><linearGradient x1="-.828%" y1="7.652%" x2="57.636%" y2="78.411%" id="vitejs__a"><stop stop-color="#41D1FF" offset="0%"/><stop stop-color="#BD34FE" offset="100%"/></linearGradient><linearGradient x1="43.376%" y1="2.242%" x2="50.316%" y2="89.03%" id="vitejs__b"><stop stop-color="#FFEA83" offset="0%"/><stop stop-color="#FFDD35" offset="8.333%"/><stop stop-color="#FFA800" offset="100%"/></linearGradient></defs><path d="M255.153 37.938 134.897 252.976c-2.483 4.44-8.862 4.466-11.382.048L.875 37.958c-2.746-4.814 1.371-10.646 6.827-9.67l120.385 21.517a6.537 6.537 0 0 0 2.322-.004l117.867-21.483c5.438-.991 9.574 4.796 6.877 9.62Z" fill="url(#vitejs__a)"/><path d="M185.432.063 96.44 17.501a3.268 3.268 0 0 0-2.634 3.014l-5.474 92.456a3.268 3.268 0 0 0 3.997 3.378l24.777-5.718c2.318-.535 4.413 1.507 3.936 3.838l-7.361 36.047c-.495 2.426 1.782 4.5 4.151 3.78l15.304-4.649c2.372-.72 4.652 1.36 4.15 3.788l-11.698 56.621c-.732 3.542 3.979 5.473 5.943 2.437l1.313-2.028 72.516-144.72c1.215-2.423-.88-5.186-3.54-4.672l-25.505 4.922c-2.396.462-4.435-1.77-3.759-4.114l16.646-57.705c.677-2.35-1.37-4.583-3.769-4.113Z" fill="url(#vitejs__b)"/></svg>                        
+                      )}
+                      {!["React", "Ruby on Rails", "SQLite", "Vite", "JavaScript", "Angular", "FastAPI", "PostgreSQL", "Docker", "Tailwind", "Astro", "TypeScript", "Node.js"].includes(tag) && (
+                        <svg class="w-full h-full" viewBox="0 -6 32 32" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <g fill="none" fill-rule="evenodd"> <path d="M0-6h32v32H0z"></path> <path fill="#c00" fill-rule="nonzero" d="M.985 19.636s.422-4.163 3.375-9.087c2.954-4.924 7.99-8.65 12.083-9.017 8.144-.816 15.46 6.485 15.46 6.485s-.24.168-.494.38C23.42 2.49 18.54 5.274 17.005 6.02c-7.033 3.925-4.91 13.616-4.91 13.616H.987zM24.137 2.32c-.45-.182-.9-.35-1.364-.505l.056-.93c.885.254 1.237.423 1.363.493l-.056.943zM22.8 5.304c.45.028.915.084 1.393.183l-.056.872c-.464-.1-.928-.155-1.392-.17l.056-.885zM17.597.913c-.407 0-.815.015-1.223.058l-.268-.83c.465-.056.915-.084 1.35-.084l.282.858h-.14zm.676 5.178c.35-.154.76-.31 1.237-.45l.31.93c-.41.125-.817.294-1.225.49l-.323-.97zm-6.386-3.7c-.366.184-.718.395-1.083.62l-.647-.985c.38-.225.745-.42 1.097-.604l.633.97zm2.883 6.33c.252-.323.548-.646.87-.942l.634.957c-.31.323-.59.647-.83 1L14.77 8.72zm-2.04 4.53c.112-.506.24-1.027.422-1.547l1.012.802c-.14.548-.24 1.097-.295 1.645l-1.14-.9zM6.57 6.57c-.34.35-.662.73-.958 1.11L4.53 6.752c.323-.352.674-.704 1.04-1.055l1 .872zm-4.25 6.286c-.224.52-.52 1.21-.702 1.688L0 13.954c.14-.38.436-1.084.703-1.69l1.618.592zm10.2 3.967l1.518.548c.084.663.21 1.28.337 1.83l-1.688-.605c-.07-.422-.14-1.027-.168-1.772z"></path> </g> </g></svg>
                       )}
                     </div>
                   </div>
@@ -154,7 +163,7 @@ const projects = [
               </div>
             </div>
           </div>
-        </a>
+        </div>
       ))}
     </div>
   </div>
