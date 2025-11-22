@@ -1,0 +1,103 @@
+---
+// src/components/Typewriter.astro
+interface Props {
+  words?: string[];
+  typingSpeed?: number;
+  deletingSpeed?: number;
+  pauseTime?: number;
+  class?: string;
+}
+
+const { 
+  words = ["Software Developer", "Designer", "Problem Solver"], 
+  typingSpeed = 150, 
+  deletingSpeed = 100, 
+  pauseTime = 2400,
+  class: className = ""
+} = Astro.props;
+---
+
+<span 
+  class:list={["typewriter-container ml-2 text-[#9acd32] font-medium inline-flex items-baseline", className]}
+  data-words={JSON.stringify(words)}
+  data-type-speed={typingSpeed}
+  data-delete-speed={deletingSpeed}
+  data-pause-time={pauseTime}
+>
+  <span class="typewriter-text" aria-live="polite"></span>
+  <!-- <span class="ml-1 inline-block w-[1ch] border-r border-[#9acd32] animate-pulse" aria-hidden="true">&nbsp;</span> -->
+</span>
+
+<script>
+  class Typewriter {
+    element: HTMLElement;
+    textElement: HTMLElement | null;
+    words: string[];
+    typingSpeed: number;
+    deletingSpeed: number;
+    pauseTime: number;
+    
+    txt: string = '';
+    wordIndex: number = 0;
+    isDeleting: boolean = false;
+    loopNum: number = 0;
+
+    constructor(el: HTMLElement) {
+      this.element = el;
+      this.textElement = el.querySelector('.typewriter-text');
+      this.words = JSON.parse(el.dataset.words || '[]');
+      this.typingSpeed = parseInt(el.dataset.typeSpeed || '150');
+      this.deletingSpeed = parseInt(el.dataset.deleteSpeed || '100');
+      this.pauseTime = parseInt(el.dataset.pauseTime || '2000');
+
+      const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+      if (mq.matches) {
+        if (this.textElement) this.textElement.textContent = this.words[0];
+        return;
+      }
+
+      this.tick();
+    }
+
+    tick() {
+      const i = this.loopNum % this.words.length;
+      const fullTxt = this.words[i];
+
+      if (this.isDeleting) {
+        this.txt = fullTxt.substring(0, this.txt.length - 1);
+      } else {
+        this.txt = fullTxt.substring(0, this.txt.length + 1);
+      }
+
+      if (this.textElement) {
+        this.textElement.textContent = this.txt;
+      }
+
+      let typeSpeed = this.isDeleting ? this.deletingSpeed : this.typingSpeed;
+
+      if (!this.isDeleting && this.txt === fullTxt) {
+        typeSpeed = this.pauseTime;
+        this.isDeleting = true;
+      } else if (this.isDeleting && this.txt === '') {
+        this.isDeleting = false;
+        this.loopNum++;
+        typeSpeed = 500;
+      }
+
+      setTimeout(() => this.tick(), typeSpeed);
+    }
+  }
+
+  document.addEventListener('astro:page-load', () => {
+    const typewriters = document.querySelectorAll('.typewriter-container');
+    typewriters.forEach(el => new Typewriter(el as HTMLElement));
+  });
+
+  if (document.readyState === 'complete') {
+    document.querySelectorAll('.typewriter-container').forEach(el => new Typewriter(el as HTMLElement));
+  } else {
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.typewriter-container').forEach(el => new Typewriter(el as HTMLElement));
+    });
+  }
+</script>
