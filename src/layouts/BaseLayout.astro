@@ -55,35 +55,34 @@ const { title, description = "Welcome to my website" } = Astro.props;
 
     <CustomCursor />
 
-    <!-- Scroll Script -->
     <script>
-      document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach(trigger => {
-        trigger.addEventListener('click', (e: MouseEvent) => {
+      import Lenis from 'lenis'
+
+      const lenis = new Lenis({
+        duration: 2.0,
+        wheelMultiplier: 0.8,
+        smoothWheel: true,
+      });
+
+      function raf(time: number) {
+        lenis.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', (e) => {
           e.preventDefault();
-          const targetId = trigger.getAttribute('href');
-          if (!targetId) return;
-          const elementoDestino = document.querySelector(targetId);
-          if (elementoDestino) {
-            const posicionInicial = window.scrollY;
-            const offset = 0;
-            const posicionFinal = elementoDestino.getBoundingClientRect().top + posicionInicial - offset;
-            const distancia = posicionFinal - posicionInicial;
-            const duracion = 1500;
-            let startTime: number | null = null;
-            const easeInOutQuad = (t: number, b: number, c: number, d: number) => {
-              t /= d / 2;
-              if (t < 1) return c / 2 * t * t + b;
-              t--;
-              return -c / 2 * (t * (t - 2) - 1) + b;
-            };
-            const animacion = (currentTime: number) => {
-              if (startTime === null) startTime = currentTime;
-              const tiempoTranscurrido = currentTime - startTime;
-              const scrollActual = easeInOutQuad(tiempoTranscurrido, posicionInicial, distancia, duracion);
-              window.scrollTo(0, scrollActual);
-              if (tiempoTranscurrido < duracion) requestAnimationFrame(animacion);
-            };
-            requestAnimationFrame(animacion);
+          const targetId = anchor.getAttribute('href');
+          
+          if (targetId && targetId !== '#') {
+            lenis.scrollTo(targetId, {
+              offset: 0, 
+
+              duration: 3.5,
+
+              easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            });
           }
         });
       });

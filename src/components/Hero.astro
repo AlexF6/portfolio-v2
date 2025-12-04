@@ -8,21 +8,17 @@ import Typewriter from "./Typewriter.astro"
     class="mx-auto flex md:min-h-screen flex-col hero gap-10 px-4 py-12
            sm:px-6 lg:px-8 md:flex-row md:items-stretch"
   >
-    <!-- LEFT: Main text -->
     <div class="flex flex-1 flex-col justify-center space-y-6">
       
-      <!-- 1. Badge -->
       <div class="hero-animate opacity-0 translate-y-12 inline-flex max-w-85 items-center gap-2 rounded-full border border-zinc-800 bg-zinc-900/40 px-3 py-1 text-xs font-medium text-zinc-300 transition-all duration-700 ease-out">
         <span class="h-1.5 w-1.5 rounded-full bg-lime-300 animate-pulse"></span>
         Available for Frontend / Fullstack roles
       </div>
 
-      <!-- 2. Name -->
       <h1 class="hero-animate opacity-0 translate-y-12 text-4xl font-bold leading-tight sm:text-5xl md:text-6xl bg-linear-to-r from-lime-300 via-emerald-300 to-cyan-300 bg-clip-text text-transparent transition-all duration-700 ease-out">
         Alexsander Gonzalez
       </h1>
 
-      <!-- 3. Typewriter -->
       <div class="hero-animate opacity-0 translate-y-12 flex flex-wrap items-baseline gap-2 text-2xl sm:text-3xl transition-all duration-700 ease-out">
         <span class="text-gray-300">I am a</span>
           <Typewriter
@@ -33,13 +29,11 @@ import Typewriter from "./Typewriter.astro"
           />
       </div>
 
-      <!-- 4. Description -->
       <p class="hero-animate opacity-0 translate-y-12 max-w-xl text-sm sm:text-base text-gray-300 transition-all duration-700 ease-out">
         Crafting elegant, performant web experiences that blend creativity with
         cutting-edge technology.
       </p>
 
-      <!-- 5. Buttons -->
       <div class="hero-animate opacity-0 translate-y-12 flex flex-wrap items-center gap-4 transition-all duration-700 ease-out">
         <a
           href="/Alexsander-Gonzalez-CV.pdf"
@@ -59,7 +53,6 @@ import Typewriter from "./Typewriter.astro"
         <div class="flex items-center gap-3 text-sm text-gray-400">
           <span class="hidden sm:inline">Find me on</span>
           <nav class="flex gap-2" aria-label="Social links">
-            <!-- GitHub -->
             <a
               target="_blank"
               rel="noreferrer"
@@ -83,7 +76,6 @@ import Typewriter from "./Typewriter.astro"
               </svg>
             </a>
 
-            <!-- LinkedIn -->
             <a
               target="_blank"
               rel="noreferrer"
@@ -110,9 +102,7 @@ import Typewriter from "./Typewriter.astro"
         </div>
       </div>
     </div>
-    
-    <!-- RIGHT: 3D model -->
-    <!-- 6. 3D Model Entrance -->
+
     <div class="hero-animate opacity-0 translate-y-12 flex flex-1 items-center justify-center mt-8 md:mt-0 transition-all duration-1000 ease-out delay-300" id="tilt-area">
       <div
         id="model-tilt-container"
@@ -144,9 +134,7 @@ import Typewriter from "./Typewriter.astro"
     </svg>
   </a>
 
-  <!-- SCRIPT -->
   <script>
-    // --- 1. HERO ENTRANCE ANIMATION ---
     document.addEventListener('DOMContentLoaded', () => {
       const elements = document.querySelectorAll('.hero-animate');
       
@@ -165,7 +153,6 @@ import Typewriter from "./Typewriter.astro"
       elements.forEach(el => observer.observe(el));
     });
 
-    // --- 2. 3D MODEL INTERACTION  ---
     if (typeof window !== "undefined") {
       const container = document.getElementById("tilt-area");
       const model = document.getElementById("tilt-model") as ModelViewerElement | null;
